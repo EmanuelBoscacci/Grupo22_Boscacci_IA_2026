@@ -31,12 +31,12 @@ class Rover(SearchProblem):
 
  
         if bateria > 1:
-            for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-                acciones.append(("moverse", (posicion[0] + dx, posicion[1] + dy)))
+            for pos_en_X, pos_en_Y in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                acciones.append(("moverse", (posicion[0] + pos_en_X, posicion[1] + pos_en_Y)))
                 
         if bateria > 4:
-            for dx, dy in [(0, 2), (0, -2), (2, 0), (-2, 0)]:
-                acciones.append(("sobremarcha", (posicion[0] + dx, posicion[1] + dy)))
+            for pos_en_X, pos_en_Y in [(0, 2), (0, -2), (2, 0), (-2, 0)]:
+                acciones.append(("sobremarcha", (posicion[0] + pos_en_X, posicion[1] + pos_en_Y)))
 
  
         if bateria < 20 and not en_sombra:
@@ -78,13 +78,65 @@ class Rover(SearchProblem):
         elif tipo_accion == "depositar":
 
             muestras_almacenadas = state1[6]
-            return len(muestras_almacenadas)
-            
+            return len(muestras_almacenadas)   
         return 0
+    
     def heuristic(self, state):
         pass
     def result(self, state, action):
-        pass
+        (
+            posicion,
+            bateria,
+            zonas_sombra,
+            muestras_igneas,
+            muestras_sedimentarias,
+            taladro,
+            mochila,
+        ) = state
+
+        tipo_accion, parametro = action
+        
+        muestras_igneas = list(muestras_igneas)
+        muestras_sedimentarias = list(muestras_sedimentarias)
+        mochila = list(mochila)
+
+        if tipo_accion == "sobremarcha":
+            bateria -= 4
+            posicion = parametro
+            
+        elif tipo_accion == "moverse":
+            bateria -= 1
+            posicion = parametro
+            
+        elif tipo_accion == "recolectar":
+            bateria -= 3
+            mochila.append(parametro)
+            if parametro == "ignea":
+                muestras_igneas.remove(posicion)
+            elif parametro == "sedimentaria":
+                muestras_sedimentarias.remove(posicion)
+                
+        elif tipo_accion == "depositar":
+            bateria -= 1
+            mochila = []
+            
+        elif tipo_accion == "equipar":
+            bateria -= 1
+            taladro = parametro
+            
+        elif tipo_accion == "recargar":
+            bateria = min(20, bateria + 10)
+
+        return (
+            posicion,
+            bateria,
+            zonas_sombra,
+            tuple(muestras_igneas),
+            tuple(muestras_sedimentarias),
+            taladro,
+            tuple(mochila),
+        )
+        
     def is_goal(self, state):
         return len(state[3]) == 0 and len(state[4]) == 0 and len(state[6]) == 0
 
