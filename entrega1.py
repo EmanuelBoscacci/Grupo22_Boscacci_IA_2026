@@ -81,6 +81,12 @@ class Rover(SearchProblem):
             return len(muestras_almacenadas)
             
         return 0
+    def heuristic(self, state):
+        pass
+    def result(self, state, action):
+        pass
+    def is_goal(self, state):
+        return len(state[3]) == 0 and len(state[4]) == 0 and len(state[6]) == 0
 
 
 
