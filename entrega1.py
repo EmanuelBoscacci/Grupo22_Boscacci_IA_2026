@@ -82,7 +82,40 @@ class Rover(SearchProblem):
         return 0
     
     def heuristic(self, state):
-        pass
+        (
+            posicion,
+            bateria,
+            zonas_sombra,
+            muestras_igneas,
+            muestras_sedimentarias,
+            taladro,
+            mochila,
+        ) = state
+
+        muestras_restantes = muestras_igneas + muestras_sedimentarias
+        
+        if not muestras_restantes:
+            return len(mochila)
+
+        distancia_minima = min(
+            abs(posicion[0] - m[0]) + abs(posicion[1] - m[1])
+            for m in muestras_restantes
+        )
+        
+        movimientos = int(max(distancia_minima / 2.0, 1.3 * distancia_minima - 0.4 * bateria))
+        tiempo_base = 3 * len(muestras_restantes)
+        tiempo_deposito = len(mochila)
+
+        costo_taladro = 0
+        if taladro is None: 
+            costo_taladro = 3
+        elif taladro == "termico" and muestras_sedimentarias:
+            costo_taladro = 3
+        elif taladro == "percusion" and muestras_igneas:
+            costo_taladro = 3
+
+        return movimientos + tiempo_base + tiempo_deposito + costo_taladro
+        
     def result(self, state, action):
         (
             posicion,
