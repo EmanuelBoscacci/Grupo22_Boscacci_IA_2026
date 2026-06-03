@@ -1,0 +1,7 @@
+MI proyecto pasó todos los tests (16/16),tardando alrededor de 4 minutos. En cambio, el proyecto generado con IA no pasó la validación completa: aunque encontraba planes rápido, falló en varios casos por proponer acciones que dejaban al rover sin batería. O sea, en nuestro caso se priorizó mejor la validez de la solución y el cumplimiento de las reglas del dominio.
+
+A nivel enfoque, los dos usan búsqueda A*, pero no modelan igual el estado ni las restricciones. Mi proyecto quedo más conservador con las condiciones del problema (batería, recarga, recolección y depósito), mientras que la versión IA fue más agresiva para encontrar planes cortos, y eso la llevó a soluciones inválidas en varios escenarios.
+
+En tests, la diferencia fue: mi proyecto aprobó toda la suite, mientras que el de IA quedó en 9/16. Los errores más repetidos estuvieron vinculados al manejo de batería en acciones como sobremarcha y recolección, lo que indica que la funcion de estado no estaba alineada del todo con los tests. Eso impactó directamente en la corrección funcional.
+
+Como conclusión, la IA fue útil para proponer una base y acelerar ideas, pero no reemplaza la validación ni el ajuste manual. En este trabajo, mi implementación resultó más robusta y confiable porque cumplió con el criterio principal de la consigna: resolver correctamente todos los casos de prueba.
