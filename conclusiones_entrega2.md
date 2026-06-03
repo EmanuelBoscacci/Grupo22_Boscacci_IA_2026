@@ -1,0 +1,7 @@
+En la formulacion del CSP, mi solucion y la generada por IA modelan el problema de manera correcta: cada modulo se representa como una variable y el objetivo es encontrar una asignacion consistente sobre la grilla. La diferencia es que la version IA orienta mas la busqueda, mientras que la mia mantiene un planteo mas directo.
+
+Sobre la eleccion de variables y dominios, ambas propuestas usan la misma idea base: variables por instancia de modulo y dominios con celdas validas, excluyendo crateres y respetando borde/interior segun el tipo. La version IA aplica mas poda, y mi version prioriza simplicidad y cercania al enunciado.
+
+En la implementacion de restricciones, ambas cubren las ocho reglas pedidas pero con distinto estilo. En mi solucion, las restricciones estan separadas en funciones simples por tipo de regla (superposicion, adyacencias prohibidas y condiciones de borde/interior), lo que hace mas directa la lectura del flujo. En la version IA, la implementacion concentra mas logica de poda y combina algunas restricciones con criterios de orden para reducir el espacio de busqueda.
+
+En legibilidad y correccion, ambas terminan siendo validas: pasaron 15/15 tests. La solucion IA obtuvo mejor tiempo (3.55s vs 6.57s), mientras que la propia queda mas facil de seguir para mantenimiento y explicacion. En conclusion, las dos cumplen, pero priorizan criterios distintos.
